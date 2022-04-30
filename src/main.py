@@ -30,14 +30,83 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/user', methods=['GET'])
-def handle_hello():
+@app.route('/users', methods=['GET'])
+def get_users():
+    body_username = request.json.get("username")
+    body_name = request.json.get("name")
+    body_email = request.json.get("email")
+    body_favorites_id = request.json.get("favorites_id")
+    users = Users(username=body_username, name=body_name, email=body_email, favorites_id=body_favorites_id)
+    db.session.add(users)
+    db.session.commit()
+    return jsonify({"users": users.username})
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+@app.route('/users/favorites', methods=['GET'])
+def get_users():
+    return 
 
-    return jsonify(response_body), 200
+@app.route('/characters', methods=['GET'])
+def get_characters():
+    body_name = request.json.get("name")
+    body_age = request.json.get("age")
+    body_hair_color = request.json.get("hair_color")
+    body_eye_color = request.json.get("eye_color")
+    characterss = Characters(name=body_name, age=body_age, hair_color=body_hair_color, eye_color=body_eye_color)
+    db.session.add(characters)
+    db.session.commit()
+    return jsonify({"characters": characters.name})
+
+@app.route('/characters/<int: character_id>', methods=['GET'])
+def get_character_by_id():
+
+    return
+
+@app.route('/planets', methods=['GET'])
+def get_planets():
+
+    return
+
+@app.route('/planets/<int: character_id>', methods=['GET'])
+def get_planet_by_id():
+
+    return
+
+@app.route('/vehicles', methods=['GET'])
+def get_vehicles():
+
+    return
+
+@app.route('/vehicles/<int: chavehicle_id>', methods=['GET'])
+def get_vehicle_by_id():
+
+    return
+
+@app.route('/favorite/character/<int:character_id', methods=['POST', 'DELETE'])
+def get_fav_character():
+    if request.method == "POST"
+
+    return
+    elif request.method == "DELETE" 
+    
+    return
+
+@app.route('/favorite/planet/<int:planet_id', methods=['POST', 'DELETE'])
+def get_fav_planet():
+    if request.method == "POST"
+
+    return
+    elif request.method == "DELETE" 
+    
+    return
+
+@app.route('/favorite/vehicle/<int:vehicle_id', methods=['POST', 'DELETE'])
+def get_fav_vehicle():
+    if request.method == "POST"
+
+    return
+    elif request.method == "DELETE" 
+    
+    return
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
