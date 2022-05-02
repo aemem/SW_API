@@ -32,29 +32,18 @@ def sitemap():
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    body_username = request.json.get("username")
-    body_name = request.json.get("name")
-    body_email = request.json.get("email")
-    body_favorites_id = request.json.get("favorites_id")
-    users = Users(username=body_username, name=body_name, email=body_email, favorites_id=body_favorites_id)
-    db.session.add(users)
-    db.session.commit()
-    return jsonify({"users": users.username})
+   users = User.query.all()
+   return jsonify({"users": users}), 200
 
 @app.route('/users/favorites', methods=['GET'])
-def get_users():
+def get_user_favs():
     return 
 
 @app.route('/characters', methods=['GET'])
 def get_characters():
-    body_name = request.json.get("name")
-    body_age = request.json.get("age")
-    body_hair_color = request.json.get("hair_color")
-    body_eye_color = request.json.get("eye_color")
-    characterss = Characters(name=body_name, age=body_age, hair_color=body_hair_color, eye_color=body_eye_color)
-    db.session.add(characters)
-    db.session.commit()
-    return jsonify({"characters": characters.name})
+    characters = Characters.query.all()
+    return jsonify({"characters": characters}), 200
+   
 
 @app.route('/characters/<int: character_id>', methods=['GET'])
 def get_character_by_id():
@@ -63,8 +52,9 @@ def get_character_by_id():
 
 @app.route('/planets', methods=['GET'])
 def get_planets():
-
-    return
+    planets = Planets.query.all()
+    return jsonify({"planets": planets}), 200
+ 
 
 @app.route('/planets/<int: character_id>', methods=['GET'])
 def get_planet_by_id():
@@ -73,8 +63,8 @@ def get_planet_by_id():
 
 @app.route('/vehicles', methods=['GET'])
 def get_vehicles():
-
-    return
+    vehicles = Vehicles.query.all()
+    return jsonify({"vehicles": vehicles}), 200
 
 @app.route('/vehicles/<int: chavehicle_id>', methods=['GET'])
 def get_vehicle_by_id():
@@ -83,7 +73,12 @@ def get_vehicle_by_id():
 
 @app.route('/favorite/character/<int:character_id', methods=['POST', 'DELETE'])
 def get_fav_character():
-    if request.method == "POST"
+    if request.method == "POST":
+        body_characters_id = request.json.get("characters_id")
+        favorite_characters = Favorite_characters(characters_id=body_characters_id)
+        db.session.add(favorite_characters)
+        db.session.commit()
+        return jsonify({"favortie characters": favorites.characters_id}
 
     return
     elif request.method == "DELETE" 
@@ -92,16 +87,25 @@ def get_fav_character():
 
 @app.route('/favorite/planet/<int:planet_id', methods=['POST', 'DELETE'])
 def get_fav_planet():
-    if request.method == "POST"
-
-    return
+    if request.method == "POST":
+        body_planets_id = request.json.get("planets_id")
+        favorite_planets = Favorite_planets(planets_id=body_planets_id)
+        db.session.add(favorite_planets)
+        db.session.commit()
+        return jsonify({"favortie planets": favorites.planets_id}
+    
     elif request.method == "DELETE" 
     
     return
 
 @app.route('/favorite/vehicle/<int:vehicle_id', methods=['POST', 'DELETE'])
 def get_fav_vehicle():
-    if request.method == "POST"
+    if request.method == "POST":
+        body_vehicles_id = request.json.get("vehicles_id")
+        favorite_vehicles = Favorite_cvehicles(vehicles_id=body_vehicles_id)
+        db.session.add(favorite_vehicles)
+        db.session.commit()
+        return jsonify({"favortie vehicles": favorites.vehicles_id}
 
     return
     elif request.method == "DELETE" 

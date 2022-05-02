@@ -3,12 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Characters(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     name = db.Column(db.String(250), nullable=False)
-     age = db.Column(db.Integer, nullable=False)
-     hair_color = db.Column(db.String(250), nullable=False)
-     eye_color = db.Column(db.String(250), nullable=False)
-
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    hair_color = db.Column(db.String(250), nullable=False)
+    eye_color = db.Column(db.String(250), nullable=False)
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -19,11 +19,11 @@ class Characters(db.Model):
         }
 
 class Planets(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     name = db.Column(db.String(250), nullable=False)
-     population = db.Column(db.Integer, nullable=False)
-     climate = db.Column(db.String(250), nullable=False)
-     terrain = db.Column(db.String(250), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    population = db.Column(db.Integer, nullable=False)
+    climate = db.Column(db.String(250), nullable=False)
+    terrain = db.Column(db.String(250), nullable=False)
 
     def serialize(self):
         return {
@@ -35,11 +35,11 @@ class Planets(db.Model):
         }
 
 class Vehicles(db.Model):
-     id = db.Column(db.Integer, primary_key=True)
-     name = db.Column(db.String(250), nullable=False)
-     model = db.Column(db.String(250), nullable=False)
-     cargo_capacity = db.Column(db.Integer, nullable=False)
-     crew = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    model = db.Column(db.String(250), nullable=False)
+    cargo_capacity = db.Column(db.Integer, nullable=False)
+    crew = db.Column(db.Integer, nullable=False)
 
     def serialize(self):
         return {
