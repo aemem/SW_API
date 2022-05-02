@@ -30,6 +30,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#user routes
 @app.route('/users', methods=['GET'])
 def get_users():
    users = User.query.all()
@@ -37,80 +38,88 @@ def get_users():
 
 @app.route('/users/favorites', methods=['GET'])
 def get_user_favs():
-    return 
+    favs = Favorites.query.all()
+    return jsonify({"favorites": favorites})
 
+#character routes
 @app.route('/characters', methods=['GET'])
 def get_characters():
     characters = Characters.query.all()
     return jsonify({"characters": characters}), 200
    
+@app.route('/character/<int: char_id>', methods=['GET'])
+def get_character_by_id(char_id):
+    char = Characters.query.get(char_id)
+    return jsonify({"character": char.serialize()}), 200
 
-@app.route('/characters/<int: character_id>', methods=['GET'])
-def get_character_by_id():
-
-    return
-
+#planet routes
 @app.route('/planets', methods=['GET'])
 def get_planets():
     planets = Planets.query.all()
     return jsonify({"planets": planets}), 200
  
+@app.route('/planet/<int: character_id>', methods=['GET'])
+def get_planet_by_id(plan_id):
+    plan = Planets.query.get(plan_id)
+    return jsonify({"planet": plan.serialize()}), 200
 
-@app.route('/planets/<int: character_id>', methods=['GET'])
-def get_planet_by_id():
-
-    return
-
+#vehicle routes
 @app.route('/vehicles', methods=['GET'])
 def get_vehicles():
     vehicles = Vehicles.query.all()
     return jsonify({"vehicles": vehicles}), 200
 
-@app.route('/vehicles/<int: chavehicle_id>', methods=['GET'])
-def get_vehicle_by_id():
+@app.route('/vehicle/<int: chavehicle_id>', methods=['GET'])
+def get_vehicle_by_id(vehi_id):
+    vehi = Vehicles.query.get(vehi_id)
+    return jsonify({"vehicle": vehi.serialize()}), 200
 
-    return
+#add favs
+@app.route('/favorite/character/<int:character_id', methods=['POST'])
+def add_fav_character():
+    body_characters_id = request.json.get("characters_id")
+    favorite_characters = Favorite_characters(characters_id=body_characters_id)
+    db.session.add(favorite_characters)
+    db.session.commit()
+    return jsonify({"favortie characters": favorites.characters_id}), 200
 
-@app.route('/favorite/character/<int:character_id', methods=['POST', 'DELETE'])
-def get_fav_character():
-    if request.method == "POST":
-        body_characters_id = request.json.get("characters_id")
-        favorite_characters = Favorite_characters(characters_id=body_characters_id)
-        db.session.add(favorite_characters)
-        db.session.commit()
-        return jsonify({"favortie characters": favorites.characters_id}
+@app.route('/favorite/planet/<int:planet_id', methods=['POST'])
+def add_fav_planet():
+    body_planets_id = request.json.get("planets_id")
+    favorite_planets = Favorite_planets(planets_id=body_planets_id)
+    db.session.add(favorite_planets)
+    db.session.commit()
+    return jsonify({"favortie planets": favorites.planets_id}, 200
 
-    return
-    elif request.method == "DELETE" 
-    
-    return
+@app.route('/favorite/vehicle/<int:vehicle_id', methods=['POST'])
+def add_fav_vehicle():
+    body_vehicles_id = request.json.get("vehicles_id")
+    favorite_vehicles = Favorite_cvehicles(vehicles_id=body_vehicles_id)
+    db.session.add(favorite_vehicles)
+    db.session.commit()
+    return jsonify({"favortie vehicles": favorites.vehicles_id}, 200
 
-@app.route('/favorite/planet/<int:planet_id', methods=['POST', 'DELETE'])
-def get_fav_planet():
-    if request.method == "POST":
-        body_planets_id = request.json.get("planets_id")
-        favorite_planets = Favorite_planets(planets_id=body_planets_id)
-        db.session.add(favorite_planets)
-        db.session.commit()
-        return jsonify({"favortie planets": favorites.planets_id}
-    
-    elif request.method == "DELETE" 
-    
-    return
+#delete favs
+@app.route('/favorite/character/<int:character_id', methods=['DELETE'])
+def delete_fav_character(char_id):
+    char = Characters.query.get(char_id)
+    db.session.delete(char)
+    db.session.commit()
+    return jsonify({"deleted": True}), 200
 
-@app.route('/favorite/vehicle/<int:vehicle_id', methods=['POST', 'DELETE'])
-def get_fav_vehicle():
-    if request.method == "POST":
-        body_vehicles_id = request.json.get("vehicles_id")
-        favorite_vehicles = Favorite_cvehicles(vehicles_id=body_vehicles_id)
-        db.session.add(favorite_vehicles)
-        db.session.commit()
-        return jsonify({"favortie vehicles": favorites.vehicles_id}
+@app.route('/favorite/planet/<int:planet_id', methods=['DELETE'])
+def delete_fav_planet(plan_id):
+    plan = Planets.query.get(plan_id)
+    db.session.delete(plan)
+    db.session.commit()
+    return jsonify({"deleted": True}), 200
 
-    return
-    elif request.method == "DELETE" 
-    
-    return
+@app.route('/favorite/vehicle/<int:vehicle_id', methods=['DELETE'])
+def delete_fav_planet(vehi_id):
+    vehi = Vehicles.query.get(vehi_id)
+    db.session.delete(vehi)
+    db.session.commit()
+    return jsonify({"deleted": True}), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
