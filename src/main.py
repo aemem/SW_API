@@ -52,7 +52,7 @@ def get_characters():
 @app.route('/character/<int:character_id>', methods=['GET'])
 def get_character_by_id(character_id):
     char = Characters.query.get(character_id)
-    return jsonify({"character": char}), 200
+    return jsonify({"character": char.serialize()}), 200
 
 #planet routes
 @app.route('/planets', methods=['GET'])
@@ -64,7 +64,7 @@ def get_planets():
 @app.route('/planet/<int:planet_id>', methods=['GET'])
 def get_planet_by_id(planet_id):
     plan = Planets.query.get(planet_id)
-    return jsonify({"planet": plan}), 200
+    return jsonify({"planet": plan.serialize()}), 200
 
 #vehicle routes
 @app.route('/vehicles', methods=['GET'])
@@ -76,51 +76,49 @@ def get_vehicles():
 @app.route('/vehicle/<int:vehicle_id>', methods=['GET'])
 def get_vehicle_by_id(vehicle_id):
     vehi = Vehicles.query.get(vehicle_id)
-    return jsonify({"vehicle": vehi}), 200
+    return jsonify({"vehicle": vehi.serialize()}), 200
 
 #add favs
-@app.route('/favorite/character/<int:character_id', methods=['POST'])
-def add_fav_character():
-    body_characters_id = request.json.get("character_id")
-    favorite_characters = Favorite_characters(characters_id=body_character_id)
+@app.route('/user/<int:user_id>/favorites/character/<int:character_id>', methods=['POST'])
+def add_fav_character(user_id, character_id):
+    favorite_characters = Favorite_characters(user_id=user_id, characters_id=character_id)
     db.session.add(favorite_characters)
     db.session.commit()
-    return jsonify({"favortie characters": favorites.characters_id}), 200
+    return jsonify({"favortie characters": favorites.characters_id.serialize()}), 200
 
-@app.route('/favorite/planet/<int:planet_id', methods=['POST'])
-def add_fav_planet():
-    body_planets_id = request.json.get("planets_id")
-    favorite_planets = Favorite_planets(planets_id=body_planets_id)
+@app.route('/user/<int:user_id>/favorite/planet/<int:planet_id>', methods=['POST'])
+def add_fav_planet(user_id, planet_id):
+    favorite_planets = Favorite_planets(user_id=user_id, planets_id=planet_id)
     db.session.add(favorite_planets)
     db.session.commit()
-    return jsonify({"favortie planets": favorites.planets_id}), 200
+    return jsonify({"favortie planets": favorites.planets_id.serialize()}), 200
 
-@app.route('/favorite/vehicle/<int:vehicle_id', methods=['POST'])
+@app.route('/user/<int:user_id>/favorite/vehicle/<int:vehicle_id>', methods=['POST'])
 def add_fav_vehicle():
-    body_vehicles_id = request.json.get("vehicles_id")
-    favorite_vehicles = Favorite_cvehicles(vehicles_id=body_vehicles_id)
+    favorite_vehicles = Favorite_vehicles(user_id=user_id, vehicles_id=vehicle_id)
     db.session.add(favorite_vehicles)
     db.session.commit()
-    return jsonify({"favortie vehicles": favorites.vehicles_id}), 200
+    return jsonify({"favortie vehicles": favorites.vehicles_id.serialize()}), 200
+
 
 #delete favs
-@app.route('/favorite/character/<int:character_id', methods=['DELETE'])
-def delete_fav_character(char_id):
-    char = Characters.query.get(char_id)
+@app.route('/user/<int:user_id>/favorite/character/<int:character_id>', methods=['DELETE'])
+def delete_fav_character(character_id):
+    char = Characters.query.get(character_id)
     db.session.delete(char)
     db.session.commit()
     return jsonify({"deleted": True}), 200
 
-@app.route('/favorite/planet/<int:planet_id', methods=['DELETE'])
-def delete_fav_planet(plan_id):
-    plan = Planets.query.get(plan_id)
+@app.route('/user/<int:user_id>/favorite/planet/<int:planet_id>', methods=['DELETE'])
+def delete_fav_planet(planet_id):
+    plan = Planets.query.get(planet_id)
     db.session.delete(plan)
     db.session.commit()
     return jsonify({"deleted": True}), 200
 
-@app.route('/favorite/vehicle/<int:vehicle_id', methods=['DELETE'])
-def delete_fav_planet(vehi_id):
-    vehi = Vehicles.query.get(vehi_id)
+@app.route('/user/<int:user_id>/favorite/vehicle/<int:vehicle_id>', methods=['DELETE'])
+def delete_fav_vehicle(vehicle_id):
+    vehi = Vehicles.query.get(vehicle_id)
     db.session.delete(vehi)
     db.session.commit()
     return jsonify({"deleted": True}), 200
